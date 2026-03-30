@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from env import AMREnv
+from fastapi import Request
+
+@app.post("/reset")
+async def reset(request: Request):
+    return {"state": env.reset()}
 
 app = FastAPI()
 env = AMREnv()
