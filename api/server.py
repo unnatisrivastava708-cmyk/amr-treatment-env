@@ -1,25 +1,16 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from env import AMREnv
-from fastapi import Request
-
-@app.post("/reset")
-async def reset(request: Request):
-    return {"state": env.reset()}
 
 app = FastAPI()
 env = AMREnv()
 
-# ---- MODELS ----
 class ActionRequest(BaseModel):
     action: str
 
-# ---- ENDPOINTS ----
-
 @app.post("/reset")
-def reset():
-    state = env.reset()
-    return {"state": state}
+async def reset(request: Request):
+    return {"state": env.reset()}
 
 @app.post("/step")
 def step(action_req: ActionRequest):
@@ -32,4 +23,4 @@ def step(action_req: ActionRequest):
 
 @app.get("/state")
 def get_state():
-    return {"state": env.reset()}
+    return {"state": env.state}
