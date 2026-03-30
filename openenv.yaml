@@ -2,7 +2,7 @@ name: amr-treatment-env
 description: AI environment for optimizing antibiotic treatment strategies under resistance constraints
 
 endpoints:
-  reset: GET /reset
+  reset: POST /reset
   step: POST /step
   state: GET /state
 
