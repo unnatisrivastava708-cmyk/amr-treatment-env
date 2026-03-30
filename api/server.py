@@ -27,4 +27,4 @@ def step(action_req: ActionRequest):
 
 @app.get("/state")
 def get_state():
-    return {"state": env.state}
+    return {"state": env.reset()}
