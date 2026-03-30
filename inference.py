@@ -6,7 +6,7 @@ BASE_URL = "http://127.0.0.1:8000"
 actions = ["beta_lactam", "glycopeptide", "AMP_therapy", "increase_dose", "wait"]
 
 # Reset environment
-state = requests.get(f"{BASE_URL}/reset").json()["state"]
+state = requests.post(f"{BASE_URL}/reset").json()["state"]
 print("Initial:", state)
 
 for step in range(7):
