@@ -1,0 +1,22 @@
+name: amr-treatment-env
+description: AI environment for optimizing antibiotic treatment strategies under resistance constraints
+
+endpoints:
+  reset: GET /reset
+  step: POST /step
+  state: GET /state
+
+actions:
+  type: string
+  enum:
+    - beta_lactam
+    - glycopeptide
+    - AMP_therapy
+    - increase_dose
+    - wait
+
+observations:
+  bacteria_type: string
+  resistance_level: float
+  patient_condition: float
+  treatment_days: int
