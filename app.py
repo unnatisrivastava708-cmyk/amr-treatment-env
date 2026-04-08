@@ -8,15 +8,16 @@ env = AMREnv()
 class ActionRequest(BaseModel):
     action: str
 
-@app.post("/reset")
-async def reset(request: Request):
-    return {"state": env.reset()}
+@app.api_route("/reset", methods=["GET", "POST"])
+async def reset():
+    return env.reset()
 
 @app.post("/step")
 def step(action_req: ActionRequest):
-    state, reward, done = env.step(action_req.action)
+    state, reward, done = 
+env.step(action_req.action)
     return {
-        "state": state,
+        **state,
         "reward": reward,
         "done": done
     }
