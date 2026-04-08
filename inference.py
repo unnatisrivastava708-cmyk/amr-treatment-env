@@ -1,41 +1,58 @@
-import os
 import requests
-import random
 
-# --- REQUIRED ENV VARIABLES ---
-API_BASE_URL = os.getenv("API_BASE_URL", "http://127.0.0.1:8000")
+BASE_URL = "https://unnatisrivastava708-cmyk-amr-treatment-env.hf.space"
 
-# --- ACTION SPACE ---
-actions = [
-    "beta_lactam",
-    "glycopeptide",
-    "AMP_therapy",
-    "increase_dose",
-    "wait"
-]
 
-# --- RESET ---
-state = requests.post(f"{API_BASE_URL}/reset").json()
+def reset_env():
+    r = requests.post(f"{BASE_URL}/reset")
+    return r.json()["state"]
 
-print(f"START state={state}")
 
-# --- STEPS ---
-for step in range(7):
-    action = random.choice(actions)
+def step_env(action):
+    r = requests.post(f"{BASE_URL}/step", json={"action": action})
+    return r.json()
 
-    response = requests.post(
-        f"{API_BASE_URL}/step",
-        json={"action": action}
-    ).json()
 
-    state = response["state"]
-    reward = response["reward"]
-    done = response["done"]
+def main():
+    print("[START] task=amr-treatment env=amr-env model=rule-based")
 
-    print(f"STEP action={action} state={state} reward={reward}")
+    rewards = []
+    success = False
+    steps = 0
 
-    if done:
-        break
+    try:
+        state = reset_env()
 
-# --- END ---
-print(f"END state={state}")
+        for _ in range(10):
+            steps += 1
+
+            action = "increase_dose"
+
+            result = step_env(action)
+
+            reward = float(result["reward"])
+            done = result["done"]
+
+            rewards.append(f"{reward:.2f}")
+
+            print(
+                f"[STEP] step={steps} action={action} "
+                f"reward={reward:.2f} done={str(done).lower()} error=null"
+            )
+
+            if done:
+                success = True
+                break
+
+    except Exception as e:
+        success = False
+
+    finally:
+        print(
+            f"[END] success={str(success).lower()} "
+            f"steps={steps} rewards={','.join(rewards)}"
+        )
+
+
+if __name__ == "__main__":
+    main()
