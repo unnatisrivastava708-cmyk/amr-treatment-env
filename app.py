@@ -11,7 +11,7 @@ class ActionRequest(BaseModel):
 
 @app.post("/reset")
 def reset():
-    return env.reset()
+    return {"state": env.reset()}
 
 
 @app.post("/step")
