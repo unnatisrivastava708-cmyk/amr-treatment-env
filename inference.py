@@ -1,31 +1,41 @@
+import os
 import requests
 import random
 
-BASE_URL = "http://127.0.0.1:8000"
+# --- REQUIRED ENV VARIABLES ---
+API_BASE_URL = os.getenv("API_BASE_URL", "http://127.0.0.1:8000")
 
-actions = ["beta_lactam", "glycopeptide", "AMP_therapy", "increase_dose", "wait"]
+# --- ACTION SPACE ---
+actions = [
+    "beta_lactam",
+    "glycopeptide",
+    "AMP_therapy",
+    "increase_dose",
+    "wait"
+]
 
-# Reset environment
-state = requests.post(f"{BASE_URL}/reset").json()["state"]
-print("Initial:", state)
+# --- RESET ---
+state = requests.post(f"{API_BASE_URL}/reset").json()
 
+print(f"START state={state}")
+
+# --- STEPS ---
 for step in range(7):
     action = random.choice(actions)
 
     response = requests.post(
-        f"{BASE_URL}/step",
+        f"{API_BASE_URL}/step",
         json={"action": action}
     ).json()
 
     state = response["state"]
     reward = response["reward"]
+    done = response["done"]
 
-    print(f"\nStep {step+1}")
-    print("Action:", action)
-    print("State:", state)
-    print("Reward:", reward)
+    print(f"STEP action={action} state={state} reward={reward}")
 
-    if response["done"]:
+    if done:
         break
 
-print("\nFinal State:", state)
+# --- END ---
+print(f"END state={state}")
