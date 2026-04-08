@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from env import AMREnv
 
-app = FastAPI()
+app = FastAPI(root_path="")
+
 env = AMREnv()
 
 class ActionRequest(BaseModel):
@@ -24,6 +25,11 @@ def step(action_req: ActionRequest):
     }
 
 
-@app.get("/state")
-def get_state():
-    return {"state": env.state}
+@app.get("/")
+def home():
+    return {"message": "API running"}
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
