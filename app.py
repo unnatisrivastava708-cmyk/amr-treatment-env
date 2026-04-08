@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from pydantic import BaseModel
 from env import AMREnv
 
@@ -9,7 +9,7 @@ class ActionRequest(BaseModel):
     action: str
 
 
-@app.api_route("/reset", methods=["GET", "POST"])
+@app.post("/reset")
 def reset():
     return env.reset()
 
