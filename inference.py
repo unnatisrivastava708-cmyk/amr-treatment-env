@@ -1,6 +1,6 @@
 import requests
 
-BASE_URL = "https://unnatisrivastava708-cmyk-amr-treatment-env.hf.space"
+BASE_URL = "https://unnatisrivastava708-cmyk-amr-treatment-env-v2.hf.space"
 
 
 def reset_env():
